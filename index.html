@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Meow Meow Meow</title>
+    <link rel="stylesheet" href="./style.css" />
+  <body>
+    <script type="text/javascript" src="./script.js"></script>
+    <h1 class="title">Meowville: A Cat Lover's Paradise</h1>
+    <section>
+      <h2 class="title">Create a cat</h2>
+      <form id="catForm">
+        <label class="pure-material-textfield-outlined">
+          <input id="name_text_field" placeholder=" " required />
+          <span>Name</span>
+        </label>
+        <div class="select">
+          <select id="stage_select" class="select-text" required>
+            <option value="" selected></option>
+            <option value="kitten">Kitten</option>
+            <option value="young">Young</option>
+            <option value="adult">Adult</option>
+          </select>
+          <label class="select-label">Stage</label>
+        </div>
+        <label class="pure-material-textfield-outlined">
+          <input id="breed_text_field" placeholder=" "  required/>
+          <span>Breed</span>
+        </label>
+        <label class="pure-material-textfield-outlined">
+          <input id="image_url_text_field" placeholder=" " required/>
+          <span>Image Url</span>
+        </label>
+        <button id="submit">
+          <span>Create a cat</span>
+        </button>
+      </form>
+    </section>
+
+    <section>
+      <h2 class="title">List of cat</h2>
+      <ul id="cat-list" class="cat-list">
+        <li class="cat-item">
+          <a class="cat-item-link" href="https://d3544la1u8djza.cloudfront.net/APHI/Blog/2021/09-24/American+Shorthair+kitten+ready+to+pounce-min.jpg" target="_blank">
+            <img
+              class="cat-item-img"
+              src="https://d3544la1u8djza.cloudfront.net/APHI/Blog/2021/09-24/American+Shorthair+kitten+ready+to+pounce-min.jpg"
+            />
+            <div class="cat-item-desc">
+              <h3 class="cat-item-name">Byron</h3>
+              <p class="cat-item-stage">Kitten</p>
+              <p class="cat-item-breed">American Short Hair</p>
+            </div>
+          </a>
+        </li>
+
+        <li class="cat-item">
+          <a class="cat-item-link" href="https://www.thesprucepets.com/thmb/fQmAnca8T3DT_7OycldvdcqZLUI=/3000x0/filters:no_upscale():strip_icc()/breeds-domestics-and-color-patterns-554862-hero-478231530f2d48d99ba41cededf48c40.jpg" target="_blank">
+            <img
+              class="cat-item-img"
+              src="https://www.thesprucepets.com/thmb/fQmAnca8T3DT_7OycldvdcqZLUI=/3000x0/filters:no_upscale():strip_icc()/breeds-domestics-and-color-patterns-554862-hero-478231530f2d48d99ba41cededf48c40.jpg"
+            />
+            <div class="cat-item-desc">
+              <h3 class="cat-item-name">Missy</h3>
+              <p class="cat-item-stage">Young</p>
+              <p class="cat-item-breed">Domestic Short Hair</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </section>
+    <script>
+        // Create a function to set .cat-item background color based on the cat-item-name value
+        function generateLinearGradient(text) {
+          let hash = 0;
+          for (let i = 0; i < text.length; i++) {
+            hash = text.charCodeAt(i) + ((hash << 5) - hash);
+          }
+  
+          let r = (hash & 0xff0000) >> 16;
+          let g = (hash & 0x00ff00) >> 8;
+          let b = hash & 0x0000ff;
+  
+          let color1 = `rgb(${r}, ${g}, ${b})`;
+          let color2 = `rgb(${g}, ${b}, ${r})`;
+  
+          let linearGradient = `linear-gradient(45deg, ${color1}, ${color2})`;
+  
+          return linearGradient;
+        }
+  
+        function setCatItemColor() {
+          const catItems = document.querySelectorAll(".cat-item");
+          catItems.forEach((catItem) => {
+            const catItemName = catItem.querySelector(".cat-item-name");
+            const catItemNameValue = catItemName.textContent;
+            // Random random gradient color base on the catItemNameValue text
+            const linearGradient = generateLinearGradient(catItemNameValue);
+            catItem.style.background = linearGradient;
+          });
+        }
+  
+        // Function to handle form submission
+        function addCatItem(event) {
+          event.preventDefault();
+  
+          // Get form values
+          let name = document.getElementById("name_text_field").value;
+          let stage = document.getElementById("stage_select").value;
+          let breed = document.getElementById("breed_text_field").value;
+          let imageUrl = document.getElementById("image_url_text_field").value;
+  
+          // Create cat item HTML
+          let catItemHTML = `
+              <li class="cat-item">
+                <a class="cat-item-link" href=${imageUrl} target="_blank">
+                  <img
+                    class="cat-item-img"
+                    src=${imageUrl}
+                  />
+                  <div class="cat-item-desc">
+                    <h3 class="cat-item-name">${name}</h3>
+                    <p class="cat-item-stage">${stage}</p>
+                    <p class="cat-item-breed">${breed}</p>
+                  </div>
+                </a>
+              </li>
+            `;
+  
+          // Append cat item to the cat list
+          let catList = document.getElementById("cat-list");
+          catList.insertAdjacentHTML("afterbegin", catItemHTML);
+  
+          // Reset the form
+          document.getElementById("catForm").reset();
+          setCatItemColor();
+        }
+        // Add event listener to the form
+        let catForm = document.getElementById("catForm");
+        catForm.addEventListener("submit", addCatItem);
+  
+        setCatItemColor();
+      </script>
+  </body>
+</html>
